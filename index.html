@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>سيرفر Cenro Y</title>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --button-color: #ffffff;
+      --button-bg: rgba(255, 255, 255, 0.1);
+      --button-hover-bg: rgba(255, 255, 255, 0.2);
+      --button-border: rgba(255, 255, 255, 0.3);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: url('images/Untitled-22.png') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--button-color);
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: -1;
+    }
+
+    header {
+      position: relative;
+      text-align: center;
+      padding: 3rem 1rem 1rem;
+      background-color: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: #e0e0e0;
+    }
+
+    header .server-description {
+      margin-top: 1rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 1rem;
+      color: #ddd;
+      line-height: 1.7;
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    .account-buttons {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .account-button {
+      background-color: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .account-button:hover {
+      background-color: rgba(255,255,255,0.3);
+      transform: scale(1.05);
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 250px;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      padding: 2rem 1rem;
+      box-shadow: -4px 0 10px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
+      transition: right 0.4s ease;
+      z-index: 999;
+    }
+
+    .sidebar.show {
+      right: 0;
+    }
+
+    .sidebar img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #fff;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .sidebar img:hover {
+      transform: scale(1.05);
+    }
+
+    .sidebar h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.4rem;
+      text-align: center;
+    }
+
+    .sidebar .coins {
+      margin-top: 0.5rem;
+      font-size: 1.2rem;
+      text-align: center;
+      color: #ffd700;
+    }
+
+    .sidebar button.logout,
+    .sidebar button.close {
+      margin-top: 1rem;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #fff;
+      color: #6C63FF;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      width: 80%;
+    }
+
+    .sidebar button.logout:hover,
+    .sidebar button.close:hover {
+      background-color: #eee;
+    }
+
+    section.buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 3rem 1rem;
+    }
+
+    section.buttons button {
+      padding: 1.5rem 2rem;
+      font-size: 1.1rem;
+      text-align: center;
+      color: var(--button-color);
+      background: var(--button-bg);
+      border: 1px solid var(--button-border);
+      border-radius: 16px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 16px var(--shadow-color);
+      transition: all 0.3s ease;
+      min-width: 220px;
+      max-width: 300px;
+    }
+
+    section.buttons button:hover {
+      background: var(--button-hover-bg);
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.5);
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: rgba(0,0,0,0.4);
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    section.buttons button small {
+      display: block;
+      font-size: 0.9rem;
+      opacity: 0.85;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+      window.location.href = 'login.html';
+    }
+  </script>
+
+  <div class="sidebar" id="sidebar">
+    <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+    <img id="avatar" src="https://i.ibb.co/YTjW3vF/default-avatar.png" alt="Avatar" onclick="document.getElementById('avatarInput').click()">
+    <h3 id="username"></h3>
+    <div class="coins">
+      💰 العملات: <span id="coinsAmount">0</span>
+    </div>
+    <button class="logout" onclick="logout()">تسجيل الخروج</button>
+    <button class="close" onclick="toggleSidebar()">إغلاق</button>
+  </div>
+
+  <header data-aos="fade-down" data-aos-duration="1500">
+    <div class="account-buttons">
+      <button class="account-button" onclick="toggleSidebar()">👤 حسابي</button>
+      <button class="account-button" onclick="claimReward()">🎁 مكافأة</button>
+    </div>
+    <h1 id="typing"></h1>
+    <p data-aos="fade-up" data-aos-delay="300">سيرفر ديسكورد الرسمي - حديث واحترافي ❤️</p>
+    <div data-aos="fade-up" data-aos-delay="500" class="server-description">
+      سيرفر Cenro Y هو مجتمع عربي احترافي يقدم خدمات متنوعة مثل البرمجة، التصاميم، والدعم الفني. هدفنا هو بناء بيئة آمنة واحترافية لكل الأعضاء ❤️
+    </div>
+  </header>
+
+  <section class="buttons">
+    <button data-aos="fade-right" data-aos-delay="100" onclick="window.location.href='project-request.html'">
+      📦 طلب بروجكتات
+      <small>(برمجة، مواقع، بوتات، أنظمة)</small>
+    </button>
+    <button data-aos="fade-left" data-aos-delay="200" onclick="alert('🎨 سيتم فتح فورم طلب تصميم قريبًا')">
+      🎨 طلب تصاميم
+      <small>(شعارات، إعلانات، بانرات)</small>
+    </button>
+  </section>
+
+  <footer data-aos="zoom-in-up" data-aos-delay="300">
+    <p>© 2025 سيرفر Cenro Y. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1200,
+      once: true
+    });
+
+    const text = "أهلا وسهلا في سيرفر Cenro Y ❤️";
+    let index = 0;
+    const typingElement = document.getElementById("typing");
+    function type() {
+      if (index < text.length) {
+        typingElement.textContent += text[index];
+        index++;
+        setTimeout(type, 100);
+      }
+    }
+    window.onload = type;
+
+    document.getElementById('username').textContent = localStorage.getItem('savedUsername') || 'زائر';
+    document.getElementById('coinsAmount').textContent = localStorage.getItem('userCoins') || '0';
+
+    const avatarImg = document.getElementById('avatar');
+    const savedAvatar = localStorage.getItem('userAvatar');
+    if (savedAvatar) avatarImg.src = savedAvatar;
+
+    document.getElementById('avatarInput').addEventListener('change', e => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        avatarImg.src = reader.result;
+        localStorage.setItem('userAvatar', reader.result);
+      };
+      if (file) reader.readAsDataURL(file);
+    });
+
+    function logout() {
+      localStorage.removeItem('isLoggedIn');
+      window.location.href = 'login.html';
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('show');
+    }
+
+    function claimReward() {
+      const lastClaim = localStorage.getItem('lastRewardTime');
+      const now = Date.now();
+      const TWENTY_FOUR_HOURS_MS = 24 * 60 * 60 * 1000;
+
+      if (lastClaim && now - parseInt(lastClaim) < TWENTY_FOUR_HOURS_MS) {
+        const remainingMs = TWENTY_FOUR_HOURS_MS - (now - parseInt(lastClaim));
+        const remainingHours = Math.floor(remainingMs / (60 * 60 * 1000));
+        const remainingMinutes = Math.floor((remainingMs % (60 * 60 * 1000)) / (60 * 1000));
+        alert(`❗ يمكنك أخذ المكافأة بعد ${remainingHours} ساعة و ${remainingMinutes} دقيقة.`);
+        return;
+      }
+
+      let coins = parseInt(localStorage.getItem('userCoins') || '0');
+      coins += 10000;
+      localStorage.setItem('userCoins', coins);
+      document.getElementById('coinsAmount').textContent = coins;
+
+      localStorage.setItem('lastRewardTime', now.toString());
+      alert('🎁 مبروك! حصلت على 10000 عملة 🎉');
+    }
+  </script>
+</body>
+</html>

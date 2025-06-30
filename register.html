@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إنشاء حساب - سيرفر Cenro Y</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+      background: url('images/Untitled-22.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      position: relative;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    .register-container {
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.6);
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      margin: 10vh auto;
+      transition: all 0.3s ease;
+    }
+
+    .register-container h2 {
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    .register-container input {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      background-color: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+
+    .register-container button {
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #fff;
+      color: #6C63FF;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .register-container button:hover {
+      background-color: #eee;
+      transform: scale(1.03);
+    }
+
+    .note {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container" data-aos="zoom-in" data-aos-duration="1500">
+    <h2>إنشاء حساب جديد</h2>
+    <input type="text" placeholder="اسم المستخدم" id="regUsername" required>
+    <input type="password" placeholder="كلمة المرور" id="regPassword" required>
+    <button onclick="register()">إنشاء الحساب</button>
+    <div class="note">بعد إنشاء الحساب يمكنك تسجيل الدخول</div>
+  </div>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+
+    function register() {
+      const username = document.getElementById('regUsername').value;
+      const password = document.getElementById('regPassword').value;
+
+     if(username.trim() && password.trim()) {
+  localStorage.setItem('savedUsername', username);
+  localStorage.setItem('savedPassword', password);
+  localStorage.setItem('userCoins', '0'); // NEW
+  localStorage.setItem('userAvatar', "https://i.ibb.co/YTjW3vF/default-avatar.png"); // NEW
+  alert('✅ تم إنشاء الحساب بنجاح! الآن يمكنك تسجيل الدخول.');
+  window.location.href = 'login.html';
+
+      } else {
+        alert('❗ من فضلك املأ كل الحقول');
+      }
+    }
+    
+  </script>
+</body>
+</html>
+

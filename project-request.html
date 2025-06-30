@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>طلب بروجكت - سيرفر Cenro Y</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: url('images/Untitled-22.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      z-index: -1;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 2rem 1rem 1rem;
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(6px);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #ddd;
+    }
+
+    .packages {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem 1rem;
+    }
+
+    .package {
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 300px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .package:hover {
+      background-color: rgba(255,255,255,0.15);
+      transform: scale(1.05);
+    }
+
+    .package h2 {
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+      color: #fff;
+    }
+
+    .package p {
+      margin-bottom: 1rem;
+      color: #ccc;
+      line-height: 1.5;
+    }
+
+    .price {
+      font-size: 1.5rem;
+      color: #ffd700;
+      margin-bottom: 1rem;
+    }
+
+    .order-btn {
+      padding: 0.7rem 1.5rem;
+      background-color: #ffd700;
+      color: #2c2c54;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .order-btn:hover {
+      background-color: #e6c200;
+    }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #ccc;
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header data-aos="fade-down" data-aos-duration="1500">
+    <h1>📦 باقات تنفيذ البروجكتات</h1>
+    <p data-aos="fade-up" data-aos-delay="300">اختر الباقة التي تناسب احتياجك وأرسل طلبك بسهولة ❤️</p>
+  </header>
+
+  <section class="packages">
+    <div class="package" data-aos="fade-right" data-aos-delay="100">
+      <h2>🟢 الباقة الضعيفة</h2>
+      <p>مناسبة للمشاريع الصغيرة جدًا مثل بوت بسيط أو صفحة تعريفية واحدة.</p>
+      <div class="price">50000 عملة</div>
+      <button class="order-btn" onclick="order('الباقة الضعيفة')">اطلب الآن</button>
+    </div>
+
+    <div class="package" data-aos="fade-up" data-aos-delay="200">
+      <h2>🟠 الباقة المتوسطة</h2>
+      <p>أفضل للمشاريع المتوسطة مثل مواقع تفاعلية أو بوتات متقدمة مع قاعدة بيانات.</p>
+      <div class="price">100000 عملة</div>
+      <button class="order-btn" onclick="order('الباقة المتوسطة')">اطلب الآن</button>
+    </div>
+
+    <div class="package" data-aos="fade-left" data-aos-delay="300">
+      <h2>👑 باقة الملوك</h2>
+      <p>للمشاريع الكبيرة مثل أنظمة إدارة متكاملة، مواقع احترافية، أو بوتات معقدة جدًا.</p>
+      <div class="price">200000 عملة</div>
+      <button class="order-btn" onclick="order('باقة الملوك')">اطلب الآن</button>
+    </div>
+  </section>
+
+  <footer data-aos="zoom-in-up" data-aos-delay="400">
+    © 2025 سيرفر Cenro Y. جميع الحقوق محفوظة.
+  </footer>
+
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1200,
+      once: true
+    });
+
+    async function order(packageName) {
+      const prices = {
+        'الباقة الضعيفة': 50000,
+        'الباقة المتوسطة': 100000,
+        'باقة الملوك': 200000
+      };
+
+      let coins = parseInt(localStorage.getItem('userCoins') || '0');
+      const price = prices[packageName];
+
+      if (coins < price) {
+        alert(`❗ عذرًا، رصيدك لا يكفي لشراء هذه الباقة.\nرصيدك الحالي: ${coins} عملة\nسعر الباقة: ${price} عملة`);
+        return;
+      }
+
+      let projectType = prompt("📌 اختر نوع المشروع: اكتب (موقع) أو (بوت) أو (تطبيق)").trim();
+      if (!projectType || !/^(موقع|بوت|تطبيق)$/i.test(projectType)) {
+        alert("❗ تم إلغاء الطلب أو إدخال نوع غير صحيح. الرجاء المحاولة مرة أخرى ❤️");
+        return;
+      }
+
+      let projectDescription = prompt("📝 من فضلك اوصف طلبك بالتفصيل ❤️").trim();
+      if (!projectDescription) {
+        alert("❗ تم إلغاء الطلب لأنه لم يتم إدخال وصف. الرجاء المحاولة مرة أخرى ❤️");
+        return;
+      }
+
+      // خصم المبلغ
+      coins -= price;
+      localStorage.setItem('userCoins', coins);
+
+      // تأكيد محلي
+      alert(
+        `✅ تم خصم ${price} عملة من رصيدك!\n` +
+        `📦 الباقة: ${packageName}\n` +
+        `📌 نوع المشروع: ${projectType}\n` +
+        `📝 وصف الطلب: ${projectDescription}\n` +
+        `💰 رصيدك المتبقي: ${coins}\n\n` +
+        `🚀 سنقوم بالتواصل معك قريبًا ❤️`
+      );
+
+      // إرسال الطلب إلى Webhook ديسكورد
+      const webhookUrl = 'https://discord.com/api/webhooks/1389353564404715560/hCMaD506Mmve85m2d87Z1j09gcbWO__FnjE8j5VH62b0C-wGZ9j0hCIvheC1g_gO1HaM'; // <-- عدل هذا برابط Webhook الخاص بك
+      const username = localStorage.getItem('savedUsername') || 'زائر';
+
+      const messageContent =
+        `🛒 طلب جديد من الموقع:\n` +
+        `👤 المستخدم: ${username}\n` +
+        `📦 الباقة: ${packageName}\n` +
+        `📌 النوع: ${projectType}\n` +
+        `📝 الوصف: ${projectDescription}\n` +
+        `💰 الرصيد بعد الشراء: ${coins}`;
+
+      try {
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ content: messageContent })
+        });
+        console.log("✅ تم إرسال الطلب إلى ديسكورد بنجاح");
+      } catch (error) {
+        console.error("❗ خطأ أثناء إرسال الطلب إلى ديسكورد:", error);
+      }
+    }
+  </script>
+</body>
+</html>
